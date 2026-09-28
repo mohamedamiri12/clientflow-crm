@@ -1,0 +1,25 @@
+.app-toolbar {
+  background: var(--clientflow-brand-indigo);
+  color: white;
+  gap: 0.75rem;
+}
+
+.app-toolbar__subtitle {
+  font-size: 0.875rem;
+  opacity: 0.85;
+}
+
+.welcome-page {
+  box-sizing: border-box;
+  margin-inline: auto;
+  max-width: var(--clientflow-page-max-width);
+  padding: 4rem var(--clientflow-page-gutter);
+}
+
+.welcome-card {
+  max-width: 42rem;
+}
+
+.welcome-card p {
+  line-height: 1.6;
+}
