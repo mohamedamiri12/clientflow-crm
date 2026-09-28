@@ -1,7 +1,23 @@
+.app-shell {
+  min-height: 100vh;
+  background: #f5f7fb;
+}
+
 .app-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-inline: 1.5rem;
   background: var(--clientflow-brand-indigo);
   color: white;
+}
+
+.app-toolbar__brand {
+  display: flex;
+  align-items: baseline;
   gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .app-toolbar__subtitle {
@@ -9,17 +25,48 @@
   opacity: 0.85;
 }
 
-.welcome-page {
-  box-sizing: border-box;
-  margin-inline: auto;
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.app-nav a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.app-nav a.active,
+.app-nav a:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: white;
+}
+
+.app-content {
   max-width: var(--clientflow-page-max-width);
-  padding: 4rem var(--clientflow-page-gutter);
+  margin: 0 auto;
+  padding: 2rem var(--clientflow-page-gutter) 3rem;
 }
 
-.welcome-card {
-  max-width: 42rem;
+.feature-page {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  padding: 2rem;
 }
 
-.welcome-card p {
+.feature-page h1 {
+  margin: 0 0 0.5rem;
+  color: var(--clientflow-brand-indigo);
+}
+
+.feature-page p {
+  margin: 0;
+  color: #475569;
   line-height: 1.6;
 }

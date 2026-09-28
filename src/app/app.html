@@ -1,9 +1,24 @@
-<mat-toolbar class="app-toolbar">
-  <span>{{ title() }}</span>
-  <span class="app-toolbar__subtitle">Client relationship management</span>
-</mat-toolbar>
+<div class="app-shell">
+  <mat-toolbar class="app-toolbar" color="primary">
+    <div class="app-toolbar__brand">
+      <span>{{ title() }}</span>
+      <span class="app-toolbar__subtitle">Client relationship management</span>
+    </div>
 
-<main class="welcome-page">
-</main>
+    <nav class="app-nav" aria-label="Primary navigation">
+      @for (item of navItems; track item.path) {
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.path === '/dashboard' }"
+        >
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+  </mat-toolbar>
 
-<router-outlet />
+  <main class="app-content">
+    <router-outlet />
+  </main>
+</div>
