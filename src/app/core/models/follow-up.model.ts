@@ -11,3 +11,7 @@ export interface FollowUp {
   completed: boolean;
   notes?: string;
 }
+
+export type CreateFollowUpPayload = Omit<FollowUp, 'id'>;
+
+export type UpdateFollowUpPayload = Partial<CreateFollowUpPayload>;

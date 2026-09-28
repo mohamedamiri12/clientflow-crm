@@ -13,3 +13,7 @@ export interface Client {
   createdAt: string;
   updatedAt: string;
 }
+
+export type CreateClientPayload = Omit<Client, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type UpdateClientPayload = Partial<CreateClientPayload>;
