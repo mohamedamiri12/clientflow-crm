@@ -1,0 +1,236 @@
+{
+  "clients": [
+    {
+      "id": "cl-001",
+      "fullName": "Amina El Idrissi",
+      "company": "Atlas Analytics",
+      "email": "amina@atlasanalytics.example",
+      "phone": "+212 661 234 567",
+      "status": "Active",
+      "notes": "Interested in expanding the reporting dashboard.",
+      "createdAt": "2026-07-04T09:15:00.000Z",
+      "updatedAt": "2026-09-20T14:30:00.000Z"
+    },
+    {
+      "id": "cl-002",
+      "fullName": "Liam Carter",
+      "company": "Northstar Studio",
+      "email": "liam@northstarstudio.example",
+      "phone": "+44 7700 900 321",
+      "status": "Lead",
+      "notes": "Referred by Amina; awaiting discovery call.",
+      "createdAt": "2026-09-05T10:20:00.000Z",
+      "updatedAt": "2026-09-18T11:45:00.000Z"
+    },
+    {
+      "id": "cl-003",
+      "fullName": "Sofia Martinez",
+      "company": "Cedar & Co.",
+      "email": "sofia@cedarco.example",
+      "phone": "+34 612 456 789",
+      "status": "Active",
+      "notes": "Quarterly account review is scheduled.",
+      "createdAt": "2026-03-11T08:00:00.000Z",
+      "updatedAt": "2026-09-12T16:10:00.000Z"
+    },
+    {
+      "id": "cl-004",
+      "fullName": "Noah Williams",
+      "company": "BrightPath Learning",
+      "email": "noah@brightpath.example",
+      "phone": "+1 202 555 0148",
+      "status": "Inactive",
+      "notes": "Paused work until the next budget cycle.",
+      "createdAt": "2025-11-20T13:45:00.000Z",
+      "updatedAt": "2026-08-30T09:25:00.000Z"
+    },
+    {
+      "id": "cl-005",
+      "fullName": "Yasmine Bennani",
+      "company": "Riad Commerce",
+      "email": "yasmine@riadcommerce.example",
+      "phone": "+212 667 890 123",
+      "status": "Lead",
+      "notes": "Requested a pricing proposal.",
+      "createdAt": "2026-09-14T15:05:00.000Z",
+      "updatedAt": "2026-09-22T08:35:00.000Z"
+    },
+    {
+      "id": "cl-006",
+      "fullName": "Oliver Chen",
+      "company": "Harbor Logistics",
+      "email": "oliver@harborlogistics.example",
+      "phone": "+65 8123 4567",
+      "status": "Active",
+      "notes": "Onboarding is complete; monitor adoption.",
+      "createdAt": "2026-05-08T12:10:00.000Z",
+      "updatedAt": "2026-09-16T10:00:00.000Z"
+    },
+    {
+      "id": "cl-007",
+      "fullName": "Maya Thompson",
+      "company": "Willow Health",
+      "email": "maya@willowhealth.example",
+      "phone": "+1 415 555 0197",
+      "status": "Archived",
+      "notes": "Contract ended; keep the record for history.",
+      "createdAt": "2024-10-22T11:20:00.000Z",
+      "updatedAt": "2026-01-31T17:40:00.000Z"
+    },
+    {
+      "id": "cl-008",
+      "fullName": "Ethan Dubois",
+      "company": "Lumiere Events",
+      "email": "ethan@lumiereevents.example",
+      "phone": "+33 612 345 678",
+      "status": "Inactive",
+      "notes": "May return for the spring event cycle.",
+      "createdAt": "2025-08-19T09:30:00.000Z",
+      "updatedAt": "2026-07-11T13:50:00.000Z"
+    },
+    {
+      "id": "cl-009",
+      "fullName": "Priya Nair",
+      "company": "Orbit Finance",
+      "email": "priya@orbitfinance.example",
+      "phone": "+91 98765 43210",
+      "status": "Active",
+      "notes": "Needs a compliance review before renewal.",
+      "createdAt": "2026-02-28T14:40:00.000Z",
+      "updatedAt": "2026-09-24T09:10:00.000Z"
+    },
+    {
+      "id": "cl-010",
+      "fullName": "Jonas Becker",
+      "company": "KiteWorks GmbH",
+      "email": "jonas@kiteworks.example",
+      "phone": "+49 151 23456789",
+      "status": "Lead",
+      "notes": "Demo requested by the operations team.",
+      "createdAt": "2026-09-17T08:25:00.000Z",
+      "updatedAt": "2026-09-23T15:00:00.000Z"
+    },
+    {
+      "id": "cl-011",
+      "fullName": "Grace Okafor",
+      "company": "Pine Digital",
+      "email": "grace@pinedigital.example",
+      "phone": "+234 803 123 4567",
+      "status": "Active",
+      "notes": "Happy customer; ask for a case study.",
+      "createdAt": "2026-04-15T10:45:00.000Z",
+      "updatedAt": "2026-09-25T12:15:00.000Z"
+    },
+    {
+      "id": "cl-012",
+      "fullName": "Lucas Silva",
+      "company": "Verde Market",
+      "email": "lucas@verdemarket.example",
+      "phone": "+55 11 91234 5678",
+      "status": "Lead",
+      "notes": "Follow up after their team planning session.",
+      "createdAt": "2026-09-21T16:30:00.000Z",
+      "updatedAt": "2026-09-26T09:05:00.000Z"
+    }
+  ],
+  "followUps": [
+    {
+      "id": "fu-001",
+      "clientId": "cl-001",
+      "title": "Review dashboard expansion brief",
+      "dueDate": "2026-09-29",
+      "priority": "High",
+      "completed": false,
+      "notes": "Bring the analytics usage summary."
+    },
+    {
+      "id": "fu-002",
+      "clientId": "cl-002",
+      "title": "Run discovery call",
+      "dueDate": "2026-09-30",
+      "priority": "High",
+      "completed": false
+    },
+    {
+      "id": "fu-003",
+      "clientId": "cl-003",
+      "title": "Prepare quarterly account review",
+      "dueDate": "2026-10-03",
+      "priority": "Medium",
+      "completed": false
+    },
+    {
+      "id": "fu-004",
+      "clientId": "cl-004",
+      "title": "Check next budget cycle",
+      "dueDate": "2026-10-15",
+      "priority": "Low",
+      "completed": false
+    },
+    {
+      "id": "fu-005",
+      "clientId": "cl-005",
+      "title": "Send pricing proposal",
+      "dueDate": "2026-09-26",
+      "priority": "High",
+      "completed": false,
+      "notes": "This task is intentionally overdue for the dashboard."
+    },
+    {
+      "id": "fu-006",
+      "clientId": "cl-006",
+      "title": "Measure first-month adoption",
+      "dueDate": "2026-10-08",
+      "priority": "Medium",
+      "completed": false
+    },
+    {
+      "id": "fu-007",
+      "clientId": "cl-008",
+      "title": "Reconnect before spring events",
+      "dueDate": "2027-02-01",
+      "priority": "Low",
+      "completed": false
+    },
+    {
+      "id": "fu-008",
+      "clientId": "cl-009",
+      "title": "Confirm compliance review owner",
+      "dueDate": "2026-09-28",
+      "priority": "High",
+      "completed": false
+    },
+    {
+      "id": "fu-009",
+      "clientId": "cl-010",
+      "title": "Schedule operations demo",
+      "dueDate": "2026-10-01",
+      "priority": "Medium",
+      "completed": false
+    },
+    {
+      "id": "fu-010",
+      "clientId": "cl-011",
+      "title": "Request customer case study",
+      "dueDate": "2026-10-10",
+      "priority": "Low",
+      "completed": false
+    },
+    {
+      "id": "fu-011",
+      "clientId": "cl-012",
+      "title": "Follow up after planning session",
+      "dueDate": "2026-10-04",
+      "priority": "Medium",
+      "completed": false
+    },
+    {
+      "id": "fu-012",
+      "clientId": "cl-001",
+      "title": "Send September meeting notes",
+      "dueDate": "2026-09-22",
+      "priority": "Low",
+      "completed": true
+    }
+  ]
+}
