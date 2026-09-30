@@ -6,8 +6,15 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AsyncValidatorFn,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { catchError, map, of } from 'rxjs';
 
+import { ClientApi } from '../../core/api/client-api';
 import {
   CLIENT_STATUSES,
   Client,
@@ -15,6 +22,7 @@ import {
   CreateClientPayload,
 } from '../../core/models/client.model';
 import { ClientStore } from './client.store';
+import { PhoneMaskDirective } from './phone-mask.directive';
 
 @Component({
   selector: 'app-client-list',
@@ -55,11 +63,17 @@ import { ClientStore } from './client.store';
                   <span class="field-error">Enter an email address.</span>
                 } @else if (clientForm.controls.email.touched && clientForm.controls.email.hasError('email')) {
                   <span class="field-error">Enter a valid email address.</span>
+                } @else if (clientForm.controls.email.touched && clientForm.controls.email.hasError('duplicateEmail')) {
+                  <span class="field-error">That email is already used by another client.</span>
+                } @else if (clientForm.controls.email.touched && clientForm.controls.email.hasError('emailCheckFailed')) {
+                  <span class="field-error">Could not check this email. Try again.</span>
+                } @else if (clientForm.controls.email.pending) {
+                  <span role="status">Checking email…</span>
                 }
               </label>
               <label class="form-field">
                 <span>Phone</span>
-                <input formControlName="phone" type="tel" required />
+                <input formControlName="phone" type="tel" appPhoneMask placeholder="+212 661 234 567" required />
                 @if (clientForm.controls.phone.touched && clientForm.controls.phone.hasError('required')) {
                   <span class="field-error">Enter a phone number.</span>
                 }
@@ -84,7 +98,7 @@ import { ClientStore } from './client.store';
 
             <div class="form-actions">
               <button type="button" (click)="closeForm()" [disabled]="isSaving()">Cancel</button>
-              <button class="primary-action" type="submit" [disabled]="isSaving()">
+              <button class="primary-action" type="submit" [disabled]="isSaving() || clientForm.pending">
                 {{ isSaving() ? 'Saving…' : 'Save client' }}
               </button>
             </div>
@@ -403,11 +417,12 @@ import { ClientStore } from './client.store';
       }
     `,
   ],
-  imports: [ReactiveFormsModule],
+  imports: [PhoneMaskDirective, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientListComponent implements OnInit {
   private readonly clientStore = inject(ClientStore);
+  private readonly clientApi = inject(ClientApi);
   private readonly formBuilder = inject(NonNullableFormBuilder);
 
   readonly search = signal('');
@@ -422,10 +437,41 @@ export class ClientListComponent implements OnInit {
   readonly editingClient = signal<Client | null>(null);
   readonly isSaving = signal(false);
   readonly saveError = signal<string | null>(null);
+  private readonly uniqueEmailValidator: AsyncValidatorFn = (control) => {
+    const email = String(control.value ?? '').trim().toLowerCase();
+    if (!email) {
+      return of(null);
+    }
+
+    const editingClientId = this.editingClient()?.id;
+    const duplicateInStore = this.clientStore.clients().some(
+      (client) =>
+        client.id !== editingClientId && client.email.trim().toLowerCase() === email,
+    );
+    if (duplicateInStore) {
+      return of({ duplicateEmail: true });
+    }
+
+    return this.clientApi.findByEmail(email).pipe(
+      map((clients) =>
+        clients.some(
+          (client) =>
+            client.id !== editingClientId && client.email.trim().toLowerCase() === email,
+        )
+          ? { duplicateEmail: true }
+          : null,
+      ),
+      catchError(() => of({ emailCheckFailed: true })),
+    );
+  };
   readonly clientForm = this.formBuilder.group({
     fullName: ['', Validators.required],
     company: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
+    email: this.formBuilder.control('', {
+      validators: [Validators.required, Validators.email],
+      asyncValidators: [this.uniqueEmailValidator],
+      updateOn: 'blur',
+    }),
     phone: ['', Validators.required],
     status: this.formBuilder.control<ClientStatus>('Lead'),
     notes: [''],
@@ -508,7 +554,7 @@ export class ClientListComponent implements OnInit {
     if (this.isSaving()) {
       return;
     }
-    if (this.clientForm.invalid) {
+    if (this.clientForm.invalid || this.clientForm.pending) {
       this.clientForm.markAllAsTouched();
       return;
     }

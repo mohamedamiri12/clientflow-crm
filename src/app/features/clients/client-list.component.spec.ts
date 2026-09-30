@@ -70,7 +70,12 @@ const clients: readonly Client[] = [
 ];
 
 describe('ClientListComponent', () => {
+  let findByEmail: (email: string) => readonly Client[];
+
   beforeEach(async () => {
+    findByEmail = (email) =>
+      clients.filter((client) => client.email.toLowerCase() === email.toLowerCase());
+
     await TestBed.configureTestingModule({
       imports: [ClientListComponent],
       providers: [
@@ -78,6 +83,7 @@ describe('ClientListComponent', () => {
           provide: ClientApi,
           useValue: {
             getAll: () => of(clients),
+            findByEmail: (email: string) => of(findByEmail(email)),
             create: (payload: CreateClientPayload) =>
               of({ ...payload, id: 'cl-007', createdAt: '', updatedAt: '' }),
             update: (id: string, payload: UpdateClientPayload) =>
@@ -157,6 +163,7 @@ describe('ClientListComponent', () => {
       status: 'Lead',
       notes: '',
     });
+    await fixture.whenStable();
     component.saveClient();
     await fixture.whenStable();
 
@@ -171,6 +178,8 @@ describe('ClientListComponent', () => {
 
     const component = fixture.componentInstance;
     component.openEditForm(clients[0]);
+    await fixture.whenStable();
+    expect(component.clientForm.controls.email.valid).toBe(true);
     component.clientForm.controls.company.setValue('Atlas Research');
     component.saveClient();
     await fixture.whenStable();
@@ -178,5 +187,20 @@ describe('ClientListComponent', () => {
     const savedClient = TestBed.inject(ClientStore).clients().find((client) => client.id === 'cl-001');
     expect(savedClient?.company).toBe('Atlas Research');
     expect(component.isFormOpen()).toBe(false);
+  });
+
+  it('rejects an email already used by another client', async () => {
+    const fixture = TestBed.createComponent(ClientListComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const component = fixture.componentInstance;
+    component.openCreateForm();
+    component.clientForm.controls.email.setValue(clients[0].email.toUpperCase());
+    await fixture.whenStable();
+
+    expect(component.clientForm.controls.email.hasError('duplicateEmail')).toBe(true);
+    component.saveClient();
+    expect(component.isFormOpen()).toBe(true);
   });
 });
