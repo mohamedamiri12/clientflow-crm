@@ -61,7 +61,10 @@ describe('ClientApi', () => {
 
     const request = httpTesting.expectOne('http://localhost:3000/clients');
     expect(request.request.method).toBe('POST');
-    expect(request.request.body).toEqual(payload);
+    const requestBody = request.request.body as Record<string, unknown>;
+    expect(requestBody).toMatchObject(payload);
+    expect(requestBody['createdAt']).toEqual(expect.any(String));
+    expect(requestBody['updatedAt']).toBe(requestBody['createdAt']);
     request.flush({ ...payload, id: 'cl-001', createdAt: '', updatedAt: '' });
   });
 
@@ -70,7 +73,8 @@ describe('ClientApi', () => {
 
     const request = httpTesting.expectOne('http://localhost:3000/clients/cl-001');
     expect(request.request.method).toBe('PATCH');
-    expect(request.request.body).toEqual({ status: 'Active' });
+    expect(request.request.body).toMatchObject({ status: 'Active' });
+    expect(request.request.body.updatedAt).toEqual(expect.any(String));
     request.flush({});
   });
 

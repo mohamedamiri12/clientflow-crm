@@ -2,7 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { ClientApi } from '../../core/api/client-api';
-import { Client } from '../../core/models/client.model';
+import { Client, CreateClientPayload, UpdateClientPayload } from '../../core/models/client.model';
+import { ClientStore } from './client.store';
 import { ClientListComponent } from './client-list.component';
 
 const clients: readonly Client[] = [
@@ -77,6 +78,10 @@ describe('ClientListComponent', () => {
           provide: ClientApi,
           useValue: {
             getAll: () => of(clients),
+            create: (payload: CreateClientPayload) =>
+              of({ ...payload, id: 'cl-007', createdAt: '', updatedAt: '' }),
+            update: (id: string, payload: UpdateClientPayload) =>
+              of({ ...clients.find((client) => client.id === id)!, ...payload }),
           },
         },
       ],
@@ -130,5 +135,48 @@ describe('ClientListComponent', () => {
     fixture.detectChanges();
 
     expect(compiled.textContent).toContain('Page');
+  });
+
+  it('validates required fields and creates a client with the typed form', async () => {
+    const fixture = TestBed.createComponent(ClientListComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const component = fixture.componentInstance;
+    component.openCreateForm();
+    component.saveClient();
+
+    expect(component.clientForm.invalid).toBe(true);
+    expect(component.clientForm.controls.fullName.touched).toBe(true);
+
+    component.clientForm.setValue({
+      fullName: 'Maya Patel',
+      company: 'Juniper Works',
+      email: 'maya@juniper.example',
+      phone: '+1 202 555 0199',
+      status: 'Lead',
+      notes: '',
+    });
+    component.saveClient();
+    await fixture.whenStable();
+
+    expect(TestBed.inject(ClientStore).clients().some((client) => client.id === 'cl-007')).toBe(true);
+    expect(component.isFormOpen()).toBe(false);
+  });
+
+  it('prefills the typed form and updates the selected client', async () => {
+    const fixture = TestBed.createComponent(ClientListComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const component = fixture.componentInstance;
+    component.openEditForm(clients[0]);
+    component.clientForm.controls.company.setValue('Atlas Research');
+    component.saveClient();
+    await fixture.whenStable();
+
+    const savedClient = TestBed.inject(ClientStore).clients().find((client) => client.id === 'cl-001');
+    expect(savedClient?.company).toBe('Atlas Research');
+    expect(component.isFormOpen()).toBe(false);
   });
 });

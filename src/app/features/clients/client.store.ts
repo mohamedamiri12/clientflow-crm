@@ -4,7 +4,11 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { EMPTY, catchError, pipe, switchMap, tap } from 'rxjs';
 
 import { ClientApi } from '../../core/api/client-api';
-import { Client } from '../../core/models/client.model';
+import {
+  Client,
+  CreateClientPayload,
+  UpdateClientPayload,
+} from '../../core/models/client.model';
 
 interface ClientState {
   clients: readonly Client[];
@@ -48,6 +52,20 @@ export const ClientStore = signalStore(
 
     return {
       load: () => loadClients(undefined),
+      create: (payload: CreateClientPayload) =>
+        clientApi.create(payload).pipe(
+          tap((client) => patchState(store, { clients: [...store.clients(), client] })),
+        ),
+      update: (id: string, payload: UpdateClientPayload) =>
+        clientApi.update(id, payload).pipe(
+          tap((updatedClient) =>
+            patchState(store, {
+              clients: store
+                .clients()
+                .map((client) => (client.id === id ? updatedClient : client)),
+            }),
+          ),
+        ),
     };
   }),
 );

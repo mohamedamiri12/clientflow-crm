@@ -30,11 +30,19 @@ export class ClientApi {
   }
 
   create(payload: CreateClientPayload): Observable<Client> {
-    return this.http.post<Client>(this.resourceUrl, payload);
+    const timestamp = new Date().toISOString();
+    return this.http.post<Client>(this.resourceUrl, {
+      ...payload,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    });
   }
 
   update(id: string, payload: UpdateClientPayload): Observable<Client> {
-    return this.http.patch<Client>(`${this.resourceUrl}/${id}`, payload);
+    return this.http.patch<Client>(`${this.resourceUrl}/${id}`, {
+      ...payload,
+      updatedAt: new Date().toISOString(),
+    });
   }
 
   delete(id: string): Observable<void> {

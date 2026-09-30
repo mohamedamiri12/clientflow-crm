@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Observable, of, throwError } from 'rxjs';
 
 import { ClientApi } from '../../core/api/client-api';
-import { Client } from '../../core/models/client.model';
+import { Client, CreateClientPayload, UpdateClientPayload } from '../../core/models/client.model';
 import { ClientStore } from './client.store';
 
 const activeClient: Client = {
@@ -19,15 +19,23 @@ const activeClient: Client = {
 describe('ClientStore', () => {
   let store: InstanceType<typeof ClientStore>;
   let getAll: () => Observable<readonly Client[]>;
+  let createClient: (payload: CreateClientPayload) => Observable<Client>;
+  let updateClient: (id: string, payload: UpdateClientPayload) => Observable<Client>;
 
   beforeEach(() => {
     getAll = () => of([]);
+    createClient = () => of(activeClient);
+    updateClient = () => of(activeClient);
 
     TestBed.configureTestingModule({
       providers: [
         {
           provide: ClientApi,
-          useValue: { getAll: () => getAll() },
+          useValue: {
+            getAll: () => getAll(),
+            create: (payload: CreateClientPayload) => createClient(payload),
+            update: (id: string, payload: UpdateClientPayload) => updateClient(id, payload),
+          },
         },
       ],
     });
@@ -70,5 +78,32 @@ describe('ClientStore', () => {
 
     expect(store.clientCount()).toBe(3);
     expect(store.activeClientCount()).toBe(2);
+  });
+
+  it('adds a created client to the current list after the API succeeds', () => {
+    const createdClient = { ...activeClient, id: 'cl-002' };
+    createClient = () => of(createdClient);
+
+    store.create({
+      fullName: createdClient.fullName,
+      company: createdClient.company,
+      email: createdClient.email,
+      phone: createdClient.phone,
+      status: createdClient.status,
+    }).subscribe();
+
+    expect(store.clients()).toEqual([createdClient]);
+    expect(store.clientCount()).toBe(1);
+  });
+
+  it('replaces the edited client in the current list after the API succeeds', () => {
+    const updatedClient = { ...activeClient, company: 'Updated Analytics' };
+    getAll = () => of([activeClient]);
+    updateClient = () => of(updatedClient);
+    store.load();
+
+    store.update(activeClient.id, { company: updatedClient.company }).subscribe();
+
+    expect(store.clients()).toEqual([updatedClient]);
   });
 });

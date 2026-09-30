@@ -131,6 +131,17 @@
       "notes": "Follow up after their team planning session.",
       "createdAt": "2026-09-21T16:30:00.000Z",
       "updatedAt": "2026-09-26T09:05:00.000Z"
+    },
+    {
+      "fullName": "Amiri Mohamed",
+      "company": "Amiri",
+      "email": "Amirimohamed1999@gmail.com",
+      "phone": "0624273882",
+      "status": "Active",
+      "notes": "test the active routes for the ultra module of computing data bases by offloading it to the meta  section of engine mules",
+      "createdAt": "2026-09-30T20:46:18.898Z",
+      "updatedAt": "2026-09-30T20:46:18.898Z",
+      "id": "wm4oQ1RxpLc"
     }
   ],
   "followUps": [
@@ -232,5 +243,6 @@
       "priority": "Low",
       "completed": true
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
