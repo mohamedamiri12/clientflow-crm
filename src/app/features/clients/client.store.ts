@@ -52,6 +52,17 @@ export const ClientStore = signalStore(
 
     return {
       load: () => loadClients(undefined),
+      getById: (id: string) =>
+        clientApi.getById(id).pipe(
+          tap((client) => {
+            const exists = store.clients().some((current) => current.id === client.id);
+            patchState(store, {
+              clients: exists
+                ? store.clients().map((current) => (current.id === client.id ? client : current))
+                : [...store.clients(), client],
+            });
+          }),
+        ),
       create: (payload: CreateClientPayload) =>
         clientApi.create(payload).pipe(
           tap((client) => patchState(store, { clients: [...store.clients(), client] })),
@@ -63,6 +74,14 @@ export const ClientStore = signalStore(
               clients: store
                 .clients()
                 .map((client) => (client.id === id ? updatedClient : client)),
+            }),
+          ),
+        ),
+      remove: (id: string) =>
+        clientApi.delete(id).pipe(
+          tap(() =>
+            patchState(store, {
+              clients: store.clients().filter((client) => client.id !== id),
             }),
           ),
         ),

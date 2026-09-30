@@ -8,6 +8,11 @@ export const routes: Routes = [
       import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
   },
   {
+    path: 'clients/:id',
+    loadComponent: () =>
+      import('./features/clients/client-details.component').then((m) => m.ClientDetailsComponent),
+  },
+  {
     path: 'clients',
     loadComponent: () =>
       import('./features/clients/client-list.component').then((m) => m.ClientListComponent),

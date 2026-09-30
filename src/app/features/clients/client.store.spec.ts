@@ -19,13 +19,17 @@ const activeClient: Client = {
 describe('ClientStore', () => {
   let store: InstanceType<typeof ClientStore>;
   let getAll: () => Observable<readonly Client[]>;
+  let getById: (id: string) => Observable<Client>;
   let createClient: (payload: CreateClientPayload) => Observable<Client>;
   let updateClient: (id: string, payload: UpdateClientPayload) => Observable<Client>;
+  let deleteClient: (id: string) => Observable<void>;
 
   beforeEach(() => {
     getAll = () => of([]);
+    getById = () => of(activeClient);
     createClient = () => of(activeClient);
     updateClient = () => of(activeClient);
+    deleteClient = () => of(undefined);
 
     TestBed.configureTestingModule({
       providers: [
@@ -33,8 +37,10 @@ describe('ClientStore', () => {
           provide: ClientApi,
           useValue: {
             getAll: () => getAll(),
+            getById: (id: string) => getById(id),
             create: (payload: CreateClientPayload) => createClient(payload),
             update: (id: string, payload: UpdateClientPayload) => updateClient(id, payload),
+            delete: (id: string) => deleteClient(id),
           },
         },
       ],
@@ -105,5 +111,22 @@ describe('ClientStore', () => {
     store.update(activeClient.id, { company: updatedClient.company }).subscribe();
 
     expect(store.clients()).toEqual([updatedClient]);
+  });
+
+  it('loads one client into the store when the details are requested', () => {
+    getById = () => of(activeClient);
+
+    store.getById(activeClient.id).subscribe();
+
+    expect(store.clients()).toEqual([activeClient]);
+  });
+
+  it('removes a client from the store only after the API delete succeeds', () => {
+    getAll = () => of([activeClient, { ...activeClient, id: 'cl-002' }]);
+    store.load();
+
+    store.remove(activeClient.id).subscribe();
+
+    expect(store.clients()).toEqual([{ ...activeClient, id: 'cl-002' }]);
   });
 });

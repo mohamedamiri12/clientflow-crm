@@ -13,6 +13,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { catchError, map, of } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 import { ClientApi } from '../../core/api/client-api';
 import {
@@ -150,6 +151,7 @@ import { PhoneMaskDirective } from './phone-mask.directive';
                 <td>{{ client.email }}</td>
                 <td>{{ client.phone }}</td>
                 <td class="row-actions">
+                  <a class="details-link" [routerLink]="['/clients', client.id]">Details</a>
                   <button type="button" [attr.aria-label]="'Edit ' + client.fullName" (click)="openEditForm(client)">
                     Edit
                   </button>
@@ -275,6 +277,13 @@ import { PhoneMaskDirective } from './phone-mask.directive';
         color: #334155;
         font: inherit;
         cursor: pointer;
+      }
+
+      .details-link {
+        margin-right: 0.75rem;
+        color: var(--clientflow-brand-indigo);
+        font-weight: 600;
+        text-decoration: none;
       }
 
       .visually-hidden {
@@ -417,7 +426,7 @@ import { PhoneMaskDirective } from './phone-mask.directive';
       }
     `,
   ],
-  imports: [PhoneMaskDirective, ReactiveFormsModule],
+  imports: [PhoneMaskDirective, ReactiveFormsModule, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClientListComponent implements OnInit {

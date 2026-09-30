@@ -1,17 +1,6 @@
 {
   "clients": [
     {
-      "id": "cl-001",
-      "fullName": "Amina El Idrissi",
-      "company": "Atlas Analytics",
-      "email": "amina@atlasanalytics.example",
-      "phone": "+212 661 234 567",
-      "status": "Active",
-      "notes": "Interested in expanding the reporting dashboard.",
-      "createdAt": "2026-07-04T09:15:00.000Z",
-      "updatedAt": "2026-09-20T14:30:00.000Z"
-    },
-    {
       "id": "cl-002",
       "fullName": "Liam Carter",
       "company": "Northstar Studio",
@@ -100,17 +89,6 @@
       "updatedAt": "2026-09-24T09:10:00.000Z"
     },
     {
-      "id": "cl-010",
-      "fullName": "Jonas Becker",
-      "company": "KiteWorks GmbH",
-      "email": "jonas@kiteworks.example",
-      "phone": "+49 151 23456789",
-      "status": "Lead",
-      "notes": "Demo requested by the operations team.",
-      "createdAt": "2026-09-17T08:25:00.000Z",
-      "updatedAt": "2026-09-23T15:00:00.000Z"
-    },
-    {
       "id": "cl-011",
       "fullName": "Grace Okafor",
       "company": "Pine Digital",
@@ -131,23 +109,12 @@
       "notes": "Follow up after their team planning session.",
       "createdAt": "2026-09-21T16:30:00.000Z",
       "updatedAt": "2026-09-26T09:05:00.000Z"
-    },
-    {
-      "fullName": "Amiri Mohamed",
-      "company": "Amiri",
-      "email": "Amirimohamed1999@gmail.com",
-      "phone": "0624273882",
-      "status": "Active",
-      "notes": "test the active routes for the ultra module of computing data bases by offloading it to the meta  section of engine mules",
-      "createdAt": "2026-09-30T20:46:18.898Z",
-      "updatedAt": "2026-09-30T20:46:18.898Z",
-      "id": "wm4oQ1RxpLc"
     }
   ],
   "followUps": [
     {
       "id": "fu-001",
-      "clientId": "cl-001",
+      "clientId": null,
       "title": "Review dashboard expansion brief",
       "dueDate": "2026-09-29",
       "priority": "High",
@@ -213,7 +180,7 @@
     },
     {
       "id": "fu-009",
-      "clientId": "cl-010",
+      "clientId": null,
       "title": "Schedule operations demo",
       "dueDate": "2026-10-01",
       "priority": "Medium",
@@ -237,7 +204,7 @@
     },
     {
       "id": "fu-012",
-      "clientId": "cl-001",
+      "clientId": null,
       "title": "Send September meeting notes",
       "dueDate": "2026-09-22",
       "priority": "Low",
